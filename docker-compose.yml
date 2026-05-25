@@ -15,11 +15,13 @@ services:
     volumes:
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
       - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
 
   redis:
     image: redis:7-alpine
     ports:
       - "6379:6379"
+    restart: unless-stopped
 
   api:
     build:
@@ -36,6 +38,7 @@ services:
 
     volumes:
       - ./api:/app
+    restart: unless-stopped
 
   worker:
     build:
@@ -47,6 +50,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    restart: unless-stopped
 
 
 volumes:
